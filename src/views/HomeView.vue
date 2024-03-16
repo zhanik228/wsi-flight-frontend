@@ -1,18 +1,6 @@
 
 
 <template>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlightPool</title>
-    <meta name="description" content="A new and energetic airline that provides passenger air transportation services on small, compact aircraft">
-    <meta name="keywords" content="flight,book,russia,fly,airline,aircraft">
-    <link rel="icon" type="image/x-icon" href="./media1/images/307246.svg">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./media1/fontawesome-free-5.14.0-web/css/all.css">
-</head>
 <body>
     <header class="header">
         <div class="container header__inner">
@@ -33,7 +21,7 @@
                         <a href="#promotions" class="test-0-nav-1 fs-500 menu-list__link"><i class="fas fa-ad"></i> Promotions</a>
                     </li>
                     <li class="menu-list__item">
-                        <a href="search.html" class="test-0-nav-2 fs-500 menu-list__link"><i class="fas fa-search"></i> Search</a>
+                        <RouterLink to="flights" class="test-0-nav-2 fs-500 menu-list__link"><i class="fas fa-search"></i> Search</RouterLink>
                     </li>
                     <li class="menu-list__item">
                         <a href="#" class="test-0-nav-3 fs-500 text- menu-list__link"><i class="fas fa-list-alt"></i> Check-in for the flight</a>
@@ -90,7 +78,7 @@
                     </div>
                     <div class="search-form__elem">
                         <label class="search-form__label" for="people">People count <span class="arrow-down"></span></label>
-                        <input class="test-0-fnp search-form__input" id="people" type="number" min="1" max="8" placeholder="Number of passengers">
+                        <input v-model="passengers" class="test-0-fnp search-form__input" id="people" type="number" min="1" max="8" placeholder="Number of passengers">
                     </div>
                     <div class="search-form__elem">
                         <button href="search.html" class="test-0-fbs primary-btn">Search</button>
@@ -213,10 +201,10 @@
                             <a href="index.html">Home</a>
                         </li>
                         <li>
-                            <a href="login.html">Login</a>
+                            <RouterLink to="/login">Login</RouterLink>
                         </li>
                         <li>
-                            <a href="register.html">Sign up</a>
+                            <RouterLink to="/register">Sign up</RouterLink>
                         </li>
                         <li>
                             <a href="#">Contact</a>
@@ -236,24 +224,28 @@
         </div>
     </footer>
 </body>
-</html>
 </template>
 
 <script>
+import router from '@/router';
+
 export default {
   data() {
     return {
       from: '',
       to: '',
       departure_date: '',
-      return_date: ''
+      return_date: '',
+      passengers: 1
     }
   },
   methods: {
     onSearchSubmit(event) {
       // const from = document.getElementById('origin')
       // const to = document.geteleme
-      console.log(this.from)
+      router.push({ path: `flights/from/${this.from}/to/${this.to}/departure_date/${this.departure_date}/return_date/${this.return_date}/passengers/${this.passengers}`} )
+
+      
     }
   }
 }
