@@ -45,8 +45,9 @@ export default {
                 })
 
                 const token = await loginRequest.json()
-                localStorage.setItem('token', token)
-                this.$route.push({ path: '/' })
+                console.log(token)
+                localStorage.setItem('token', token.data.token)
+                router.push({ path: '/' })
             } catch (error) {
                 let errors = error.errors
             }

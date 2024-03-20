@@ -54,7 +54,7 @@
                     <option value="cheap">Cheapest</option>
                 </select>
                 <div class="flight-cards__wrapper">
-                    <div @click="selectCard" class="flight-card" draggable="true" :id="flight.flight_id" v-for="flight in filteredFlights" :key="flight.flight_id">
+                    <div @click.stop="selectCard(flight.flight_id)" class="flight-card" draggable="true" :id="flight.flight_id" v-for="flight in filteredFlights" :key="flight.flight_id">
                         <div class="flight-card__icon"><i class="fas fa-plane"></i></div>
                         <div class="flight-card__body">
                             <p class=" flight-card__info flight-card__number">
@@ -86,10 +86,10 @@
             <div class="container">
                 <h2>Selected Flights</h2>
                 <div class="select-flight-section__inner">
-                    <div class="select-flight-section__title">Selected to there: <div id="display-selected-there"></div></div>
-                    <div class="select-flight-section__title">Selected to return: <div id="display-selected-return"></div></div>
+                    <div class="select-flight-section__title">Selected to there: <div draggable="true" id="display-selected-there"></div></div>
+                    <div class="select-flight-section__title">Selected to return: <div draggable="true" id="display-selected-return"></div></div>
                 </div>
-                <a href="booking.html" class="test-4-bsb primary-btn">Go To Booking</a>
+                <a @click="handleBookingClick" class="test-4-bsb primary-btn">Go To Booking</a>
             </div>
         </section>
     </main>
@@ -103,8 +103,10 @@ export default {
     data() {
         return {
             flights: [],
-            depart_time_filter: '2024-03-16',
-            filter_type: 'fast'
+            depart_time_filter: '2020-09-20',
+            filter_type: 'fast',
+            selectedToThereId: null,
+            selectedToReturnId: null,
         }
     },
     async mounted() {
@@ -142,8 +144,28 @@ export default {
                 })
             }
         },
-        selectCard(event) {
-            console.log(event.target.classList.add('flight-card--active'))
+        selectCard(flight_id) {
+            const placeholderThere = document.getElementById('display-selected-there')
+            const placeholderReturn = document.getElementById('display-selected-return')
+            const selectedItem = document.getElementById(flight_id)
+
+            if (confirm('do you wanna select it for there?')) {
+                placeholderThere.appendChild(selectedItem)
+                this.selectedToThereId = flight_id
+            } else if (confirm('do you wanna select it for return')) {
+                placeholderReturn.appendChild(selectedItem)
+                this.selectedToReturnId = flight_id
+            }
+        },
+        handleBookingClick() {
+            // const selectedSeats = []
+            let selectedSeats = [...this.flights].filter((flight) => {
+                return flight.flight_id == this.selectedToThereId ||
+                flight.flight_id == this.selectedToReturnId
+            })
+            console.log(selectedSeats)
+            localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats))
+            router.push({ path: `/booking/there/${this.selectedToThereId}/return/${this.selectedToReturnId}` })
         }
     }
 }

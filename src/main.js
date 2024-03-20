@@ -1,5 +1,6 @@
 import "./assets/main.css";
 import "./assets/search.css";
+import './assets/booking.css'
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";

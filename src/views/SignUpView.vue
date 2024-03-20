@@ -50,7 +50,7 @@ export default {
                 method: 'POST',
                 body: formdata,
             })
-            console.log(await response.status)
+            console.log(await response)
 
             if (response.status === 204) {
                 router.push({ path: '/' })
